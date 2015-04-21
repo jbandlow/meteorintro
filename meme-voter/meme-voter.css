@@ -1,0 +1,15 @@
+/* CSS declarations go here */
+img.upvote {
+  content: url('https://pearlsofprofundity.files.wordpress.com/2014/07/drunk-obama-thumbs-up.jpg');
+  height: 100px;
+}
+
+img.downvote {
+ content: url('http://i.ytimg.com/vi/gYNUOkqzcVA/maxresdefault.jpg');
+ height: 100px;
+}
+
+div.score {
+  color: red;
+  float: right;
+}

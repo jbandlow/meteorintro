@@ -1,0 +1,23 @@
+<head>
+  <title>meme-voter</title>
+</head>
+
+<body>
+  <h1>Vote for your favorite!</h1>
+  {{> leaderboard}}
+</body>
+
+<template name="leaderboard">
+  {{#each images}}
+    {{> ballot}}
+  {{/each}}
+</template>
+
+<template name="ballot">
+<div class="ballot">
+  <img class="upvote">
+  <img class="meme" src={{imageUrl}}>
+  <img class="downvote">
+  <div class="score">{{imageScore}}</div>
+</div>
+</template>
