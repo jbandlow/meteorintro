@@ -5,6 +5,7 @@
 <body>
   {{> header}}
   {{> leaderboard}}
+  {{> footer}}
 </body>
 
 
@@ -42,6 +43,14 @@
 <div class="meme" style="background-image: url({{url}})">
   <div class="toptext">{{toptext}}</div>
   <div class="bottomtext">{{bottomtext}}</div>
+</div>
+</template>
+
+<template name="footer">
+<div class="footer">
+  <hr>
+  This presentation brought to you by the number {{random 12}}, and the letters
+  {{firstLetter}} and {{secondLetter}}.
 </div>
 </template>
 

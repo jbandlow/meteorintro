@@ -2,6 +2,8 @@
 Images = new Mongo.Collection("images");
 
 // When called, Meteor methods run on BOTH the client and the server.
+// This is useful for calls which will update the DB, but which we want
+// to simulate in the front end while that is happening.
 Meteor.methods({
   addStar: function(memeId) {
     Meteor.users.update(
@@ -33,10 +35,21 @@ Meteor.methods({
   }
 });
 
+// Just a function that might come in handy on the client or the server.
+var randomLetter = function() {
+  return String.fromCharCode(65 + Math.floor(Math.random() * 26));
+}
 
 if (Meteor.isClient) {
   // Session variables maintain state within a browser tab.
   Session.set("numVotes", 0);
+  // Subscriptions describe what data sources we have access to.
+  Meteor.subscribe("images");
+  // Configure the login widget.
+  Accounts.ui.config({
+    passwordSignupFields: "USERNAME_ONLY"
+  });
+
 
   //********   HEADER TEMPLATE  ********//
   Template.header.helpers({
@@ -63,7 +76,8 @@ if (Meteor.isClient) {
       imageUrl: function() { return this.url || ''; },
       imageScore: function() { return this.score || 0; },
       starChoice: function() {
-        return this._id === Meteor.user().profile.starred ? 'fullstar' : 'emptystar';
+        return Meteor.user() && Meteor.user().profile &&
+            this._id === Meteor.user().profile.starred ? 'fullstar' : 'emptystar';
       }
   });
 
@@ -83,7 +97,8 @@ if (Meteor.isClient) {
     },
     'click .star': function() {
       var memeId = this._id;
-      if (_.contains(Meteor.user().profile.starred, memeId)) {
+      if (Meteor.user() && Meteor.user().profile &&
+          Meteor.user().profile.starred === memeId) {
         Meteor.call('removeStar', memeId);
       } else {
         Meteor.call('addStar', memeId);
@@ -92,21 +107,39 @@ if (Meteor.isClient) {
   });
   //*************************************//
 
-  Accounts.ui.config({
-    passwordSignupFields: "USERNAME_ONLY"
+
+  //*********  FOOTER TEMPLATE  ********//
+  // Helpers
+  Template.footer.helpers({
+    random: function(max) {
+      return Math.floor((Math.random() * max) + 1);
+    },
+    firstLetter: function() { return randomLetter(); },
+    secondLetter: function() { return randomLetter(); }
   });
+  //*************************************//
 }
 
+
 if (Meteor.isServer) {
+  // Publish some, but not all, of the images collection.
+  Meteor.publish('images', function() {
+      return Images.find(
+          {'name': {'$ne': '06-Trollface'}},
+          {fields: {'secretInfo': 0}}
+      );
+  });
+
   Meteor.startup(function() {
-    Images.remove({});
+    // Initialize the DB.
     var initial_images = [
       {
         'name' : '05-Success Kid',
         'url' : 'http://images.memegenerator.net/images/298x/1031.jpg',
         'toptext': 'Successful demo',
         'bottomtext': 'Meteor FTW',
-        'score': 0
+        'score': 0,
+        'secretInfo': 'Something no one should see'
       },
       {
         'name' : '04-Wonka',
@@ -134,6 +167,13 @@ if (Meteor.isServer) {
         'url' : 'http://images.memegenerator.net/images/298x/984.jpg',
         'toptext': "What if client code",
         'bottomtext': "was server code?",
+        'score': 0
+      },
+      {
+        'name' : '06-Trollface',
+        'url' : 'http://images.memegenerator.net/images/298x/1184342.jpg',
+        'toptext': '',
+        'bottomtext': '',
         'score': 0
       }
     ];
