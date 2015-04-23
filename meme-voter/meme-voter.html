@@ -15,9 +15,17 @@
 
 <template name="ballot">
 <div class="ballot">
-  <img class="upvote">
-  <img class="meme" src={{imageUrl}}>
-  <img class="downvote">
+  <div class="upvote"></div>
+  {{> meme}}
+  <div class="downvote"></div>
   <div class="score">{{imageScore}}</div>
 </div>
 </template>
+
+<template name="meme">
+<div class="meme" style="background-image: url({{url}})">
+  <div class="toptext">{{toptext}}</div>
+  <div class="bottomtext">{{bottomtext}}</div>
+</div>
+</template>
+

@@ -1,15 +1,56 @@
 /* CSS declarations go here */
-img.upvote {
-  content: url('https://pearlsofprofundity.files.wordpress.com/2014/07/drunk-obama-thumbs-up.jpg');
-  height: 100px;
+div.ballot {
+  width: 80%;
+  height: 350px;
+  padding: 50px;
 }
 
-img.downvote {
- content: url('http://i.ytimg.com/vi/gYNUOkqzcVA/maxresdefault.jpg');
- height: 100px;
+div.upvote {
+  content: url('https://pearlsofprofundity.files.wordpress.com/2014/07/drunk-obama-thumbs-up.jpg');
+  height: 100px;
+  padding: 90px 30px;
+  float: left;
+}
+
+div.meme {
+  float: left;
+  height: 300px;
+  width: 300px;
+}
+
+div.downvote {
+  content: url('http://i.ytimg.com/vi/gYNUOkqzcVA/maxresdefault.jpg');
+  height: 100px;
+  padding: 90px 30px;
+  float: left;
 }
 
 div.score {
-  color: red;
-  float: right;
+  color: green;
+  float: left;
+  font-family: "Helvetica Neue", sans-serif;
+  font-size: 400%;
+  padding: 95px 30px;
+}
+
+div.toptext {
+  font-size: 180%;
+  color: whitesmoke;
+  font-family: sans-serif;
+  padding: 5px;
+  text-align: center;
+}
+
+div.bottomtext {
+  font-size: 170%;
+  color: whitesmoke;
+  font-family: sans-serif;
+  margin-top: 73%;
+  padding: 5px;
+  text-align: center;
+}
+
+
+div.red {
+color: red;
 }
