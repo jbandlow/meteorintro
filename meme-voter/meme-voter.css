@@ -1,4 +1,3 @@
-/* CSS declarations go here */
 div.ballot {
   width: 80%;
   height: 350px;
@@ -48,9 +47,4 @@ div.bottomtext {
   margin-top: 73%;
   padding: 5px;
   text-align: center;
-}
-
-
-div.red {
-color: red;
 }

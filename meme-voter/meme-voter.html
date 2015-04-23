@@ -3,9 +3,17 @@
 </head>
 
 <body>
-  <h1>Vote for your favorite!</h1>
+  {{> header}}
   {{> leaderboard}}
 </body>
+
+
+<template name="header">
+<center>
+  <h1>Vote for your favorite!</h1>
+  <h2>You've voted {{numVotes}} times</h2>
+</center>
+</template>
 
 <template name="leaderboard">
   {{#each images}}
