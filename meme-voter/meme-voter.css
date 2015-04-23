@@ -48,3 +48,18 @@ div.bottomtext {
   padding: 5px;
   text-align: center;
 }
+
+div.star {
+  height: 50px;
+  width: 50px;
+  float: left;
+  padding: 105px 10px;
+}
+
+div.fullstar {
+  content: url('/fullstar.png');
+}
+
+div.emptystar {
+  content: url('/emptystar.jpg');
+}

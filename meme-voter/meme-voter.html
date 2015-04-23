@@ -10,8 +10,13 @@
 
 <template name="header">
 <center>
-  <h1>Vote for your favorite!</h1>
+  {{#if currentUser}}
+    <h1>Vote for your favorite!</h1>
+  {{else}}
+    <h1>Log in to vote!</h1>
+  {{/if}}
   <h2>You've voted {{numVotes}} times</h2>
+  {{> loginButtons}}
 </center>
 </template>
 
@@ -27,6 +32,9 @@
   {{> meme}}
   <div class="downvote"></div>
   <div class="score">{{imageScore}}</div>
+  {{#if currentUser}}
+    <div class="star {{starChoice}}"></div>
+  {{/if}}
 </div>
 </template>
 

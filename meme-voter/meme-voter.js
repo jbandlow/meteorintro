@@ -1,7 +1,41 @@
 // Common code between client and server
 Images = new Mongo.Collection("images");
 
+// When called, Meteor methods run on BOTH the client and the server.
+Meteor.methods({
+  addStar: function(memeId) {
+    Meteor.users.update(
+      {'_id': Meteor.userId()},
+      {'$set': {'profile.starred': memeId}}
+    );
+  },
+  removeStar: function(memeId) {
+    Meteor.users.update(
+      {'_id': Meteor.userId()},
+      {'$unset': 'profile.starred'}
+    );
+  },
+  upvoteImage: function(imageId) {
+    if (Meteor.userId()) {
+      Images.update(imageId, {'$inc': {'score': 1}});
+      if (Meteor.isClient) {
+        Session.set("numVotes", Session.get("numVotes") + 1);
+      }
+    }
+  },
+  downvoteImage: function(imageId) {
+    if (Meteor.userId()) {
+      Images.update(imageId, {'$inc': {'score': -1}});
+      if (Meteor.isClient) {
+        Session.set("numVotes", Session.get("numVotes") + 1);
+      }
+    }
+  }
+});
+
+
 if (Meteor.isClient) {
+  // Session variables maintain state within a browser tab.
   Session.set("numVotes", 0);
 
   //********   HEADER TEMPLATE  ********//
@@ -27,36 +61,40 @@ if (Meteor.isClient) {
   // Helpers
   Template.ballot.helpers({
       imageUrl: function() { return this.url || ''; },
-      imageScore: function() { return this.score || 0; }
+      imageScore: function() { return this.score || 0; },
+      starChoice: function() {
+        return this._id === Meteor.user().profile.starred ? 'fullstar' : 'emptystar';
+      }
   });
 
   // Renderer
   Template.ballot.onRendered(function() {
+    // Console.log on rendered is a good way to see the data context.
     console.log('ballot: ',this);
   });
 
   // Event Handlers
   Template.ballot.events({
-    'click .upvote': function(event, template) {
-      Images.update(this._id, {'$inc': {'score': 1}});
-      Session.set("numVotes", Session.get("numVotes") + 1);
-    }
-  });
-  Template.ballot.events({
-    'click .downvote': function(event, template) {
-      Images.update(this._id, {'$inc': {'score': -1}});
-      Session.set("numVotes", Session.get("numVotes") + 1);
+    'click .upvote': function() {
+      Meteor.call('upvoteImage', this._id);
+    },
+    'click .downvote': function() {
+      Meteor.call('downvoteImage', this._id);
+    },
+    'click .star': function() {
+      var memeId = this._id;
+      if (_.contains(Meteor.user().profile.starred, memeId)) {
+        Meteor.call('removeStar', memeId);
+      } else {
+        Meteor.call('addStar', memeId);
+      }
     }
   });
   //*************************************//
 
-
-  //*******  MEME  TEMPLATE ********//
-  // Renderer
-  Template.meme.onRendered(function() {
-    console.log('meme: ',this);
+  Accounts.ui.config({
+    passwordSignupFields: "USERNAME_ONLY"
   });
-  //*************************************//
 }
 
 if (Meteor.isServer) {
