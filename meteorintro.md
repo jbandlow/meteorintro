@@ -1,6 +1,6 @@
-# Meteor: Theory and Practice
+# Meteor through memes
 
-## Welcome and Demo
+## Demo
 
 http://meteormemeintro.meteor.com
 
