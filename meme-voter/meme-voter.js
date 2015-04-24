@@ -1,3 +1,14 @@
+/*****************************************/
+// A single-file demo app for Meteor.
+//
+// Highly inspired by the Meteor Tutorial: https://www.meteor.com/install
+// and the Meteor leaderboard: https://github.com/meteor/meteor/tree/devel/examples/leaderboard
+//
+// Thanks to memegenerator.net for the meme templates.
+//
+// If anything is left, it's Copyright 2015 Jason Bandlow (jbandlow@gmail.com)
+/*****************************************/
+
 // Common code between client and server
 Images = new Mongo.Collection("images");
 
